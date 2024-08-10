@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopwatch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f0f0f0;
+        }
+
+        .stopwatch {
+            text-align: center;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .time {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        button {
+            font-size: 1rem;
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        button:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        #start {
+            background: #28a745;
+            color: #fff;
+        }
+
+        #stop {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        #reset {
+            background: #ffc107;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="stopwatch">
+        <div id="time" class="time">00:00:00</div>
+        <button id="start">Start</button>
+        <button id="stop">Stop</button>
+        <button id="reset">Reset</button>
+    </div>
+    <script>
+        let timer;
+        let [hours, minutes, seconds] = [0, 0, 0];
+        let running = false;
+
+        function updateTimeDisplay() {
+            const timeDisplay = document.getElementById('time');
+            timeDisplay.textContent = 
+                `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            if (!running) {
+                running = true;
+                timer = setInterval(() => {
+                    seconds++;
+                    if (seconds >= 60) {
+                        seconds = 0;
+                        minutes++;
+                    }
+                    if (minutes >= 60) {
+                        minutes = 0;
+                        hours++;
+                    }
+                    updateTimeDisplay();
+                }, 1000);
+            }
+        }
+
+        function stopTimer() {
+            if (running) {
+                running = false;
+                clearInterval(timer);
+            }
+        }
+
+        function resetTimer() {
+            stopTimer();
+            [hours, minutes, seconds] = [0, 0, 0];
+            updateTimeDisplay();
+        }
+
+        document.getElementById('start').addEventListener('click', startTimer);
+        document.getElementById('stop').addEventListener('click', stopTimer);
+        document.getElementById('reset').addEventListener('click', resetTimer);
+
+        updateTimeDisplay(); // Initial display update
+    </script>
+</body>
+</html>
